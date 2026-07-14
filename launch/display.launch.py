@@ -14,6 +14,10 @@ def generate_launch_description():
         pkg_share, "urdf", "robot.urdf.xacro"
     )
 
+    rviz_config_path = os.path.join(
+        pkg_share, "rviz", "robot_view.rviz"
+    )
+
     robot_description = xacro.process_file(xacro_path).toxml()
 
     return LaunchDescription([
@@ -32,4 +36,11 @@ def generate_launch_description():
                 }
             ]
         ),
+        Node(
+            package='rviz2',
+            executable='rviz2',
+            name='rviz2',
+            output='screen',
+            arguments=['-d', rviz_config_path]
+        )
     ])
