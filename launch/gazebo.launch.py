@@ -15,6 +15,10 @@ def generate_launch_description():
     pkg_share = get_package_share_directory('robot_description')
     turtlebot3_gazebo_share = get_package_share_directory('turtlebot3_gazebo')
 
+    rviz_config_path = os.path.join(
+        pkg_share, "rviz", "gazebo_robot_view.rviz"
+    )
+
     world_file = os.path.join(
         turtlebot3_gazebo_share,
         'worlds',
@@ -92,10 +96,19 @@ def generate_launch_description():
         output='screen'
     )
 
+    rviz = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=['-d', rviz_config_path]
+    )
+
     return LaunchDescription([
         gazebo_resource_path,
         gazebo,
         robot_state_publisher,
         spawn_robot,
-        bridge
+        bridge,
+        rviz
     ])
